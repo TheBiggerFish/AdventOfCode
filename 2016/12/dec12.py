@@ -4,98 +4,52 @@
 # https://adventofcode.com/2016/day/12
 
 
-class Instruction:
-    def __init__(self,ins,arg1='',arg2=''):
-        self.ins = ins
-        self.left = arg1 if arg1 in ('a','b','c','d') else int(arg1)
-        self.right = arg2 if arg2 in ('a','b','c','d','') else int(arg2)
-    
-    @staticmethod
-    def load_program(filename):
-        with open(filename) as in_file:
-            return [Instruction(*tuple(i.strip().replace(',','').split(' '))) for i in in_file]
+from typing import Any,Dict
+from EulerLib.computer import Computer, Instruction, Operand, Operation, ProgramCounter
 
-    def __str__(self):
-        return f'{self.ins} {self.left} {self.right}'
-class Computer:
-    def __init__(self,registers):
-        self.registers = {}
-        for r in registers:
-            self.registers[r] = 0
-        self.zero_out()
+def cpy_func(arguments:list[str],registers:Dict[str,Any],pc:ProgramCounter) -> ProgramCounter:
+    arg0 = arguments[0]
+    if arg0 in registers:
+        arg0 = registers[arg0]
+    registers[arguments[1]] = int(arg0)
+    return pc+1
 
-    def zero_out(self):
-        self.pc = 0
-        for r in self.registers:
-            self.registers[r] = 0
+def inc_func(arguments:list[str],registers:Dict[str,Any],pc:ProgramCounter) -> ProgramCounter:
+    registers[arguments[0]] += 1
+    return pc+1
 
-    def set_reg(self,which,value):
-        self.registers[which] = value
-    
-    def get_reg(self,which):
-        return self.registers[which]
+def dec_func(arguments:list[str],registers:Dict[str,Any],pc:ProgramCounter) -> ProgramCounter:
+    registers[arguments[0]] -= 1
+    return pc+1
 
-    def execute(self,program):
-        steps = 1
-        while self.pc < len(program):
-            instruction = program[self.pc]
-            self.execute_instruction(instruction)
-            steps += 1
-        
-    def execute_instruction(self,instruction):
-        if instruction.ins == 'cpy':
-            self.cpy(instruction.left,instruction.right)
-        elif instruction.ins == 'inc':
-            self.inc(instruction.left)
-        elif instruction.ins == 'dec':
-            self.dec(instruction.left)
-        elif instruction.ins == 'jnz':
-            self.jnz(instruction.left,instruction.right)
+def jnz_func(arguments:list[str],registers:Dict[str,Any],pc:ProgramCounter) -> ProgramCounter:
+    arg0 = arguments[0]
+    if arg0 in registers:
+        arg0 = registers[arg0]
+    if int(arg0) == 0:
+        return pc + 1
+    else:
+        return pc + int(arguments[1])
 
-        if instruction.ins in ('cpy','inc','dec'):
-            self.pc += 1
-        
-    def cpy(self,value,reg):
-        if reg not in self.registers:
-            raise ValueError(f'Argument \'{reg}\' is not a valid register')
-        if value in self.registers:
-            value = self.get_reg(value)
-        self.set_reg(reg,value)
+ops = {
+    'cpy': Operation('cpy',cpy_func,[Operand.REGISTER|Operand.CONSTANT,Operand.REGISTER]),
+    'inc': Operation('inc',inc_func,[Operand.REGISTER]),
+    'dec': Operation('dec',dec_func,[Operand.REGISTER]),
+    'jnz': Operation('jnz',jnz_func,[Operand.REGISTER|Operand.CONSTANT,Operand.CONSTANT]),
+}
 
-    def inc(self,reg):
-        if reg not in self.registers:
-            raise ValueError(f'Argument \'{reg}\' is not a valid register')
-        self.set_reg(reg,self.get_reg(reg)+1)
+program = []
+with open('2016/12/input.txt') as f:
+    for line in f:
+        cmd = line.strip().split()
+        op = ops[cmd[0]]
+        args = cmd[1:]
+        program.append(Instruction(op,args))
 
-    def dec(self,reg):
-        if reg not in self.registers:
-            raise ValueError(f'Argument \'{reg}\' is not a valid register')
-        self.set_reg(reg,self.get_reg(reg)-1)
+comp1 = Computer(registers={'a':0,'b':0,'c':0,'d':0},initial_pc=0)
+comp2 = Computer(registers={'a':0,'b':0,'c':1,'d':0},initial_pc=0)
 
-    def jnz(self,value,step):
-        if value in self.registers:
-            value = self.get_reg(value)
-        if step in self.registers:
-            step = self.get_reg(step)
-        if value != 0:
-            self.pc += step
-        else:
-            self.pc += 1
-    
-    def __str__(self):
-        string = f'Registers: pc={self.pc}'
-        for reg in self.registers:
-            string += f', {reg}={self.get_reg(reg)}'
-        return string
-
-
-c = Computer(['a','b','c','d'])
-program = Instruction.load_program('2016/12/input.txt')
-c.execute(program)
-print(f'Register \'a\' after first run: {c.get_reg("a")}')
-
-c.zero_out()
-c.set_reg('c',1)
-program = Instruction.load_program('2016/12/input.txt')
-c.execute(program)
-print(f'Register \'a\' after second run (with register c=1 initially): {c.get_reg("a")}')
+comp1.execute(program)
+print('Value in register \'a\' after run 1:',comp1.regs['a'])
+comp2.execute(program)
+print('Value in register \'a\' after run 2:',comp2.regs['a'])
