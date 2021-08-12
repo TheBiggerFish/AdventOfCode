@@ -9,6 +9,8 @@ from EulerLib.pathfinding import Grid
 
 input = 'abcdefgh'
 bounds = Point(37,27)
+# bounds = Point(3,3)
+target = Point(bounds.x-1,0)
 
 class Node:
     def __init__(self,id:Point,size:int,used:int):
@@ -35,13 +37,15 @@ class Node:
 
     def __str__(self):
         if self.id == Point(0,0):
-            return 'O'
-        elif self.used_percent > 90:
-            return '#'
+            return ' O'
+        elif self.id == target:
+            return ' X'
+        elif self.used > 90:
+            return ' #'
         elif self.used == 0:
-            return '_'
+            return ' _'
         else:
-            return '.'
+            return str(self.avail).rjust(2,' ')
 
     def viable_pair(self,other):
         return self != other and self.used != 0 and self.used <= other.avail
@@ -65,7 +69,7 @@ class Node:
 
     
 with open('2016/22/input.txt') as f:
-    lines = f.read().split('\n')[2:-1]
+    lines = [line.strip() for line in f.readlines() if '/dev/grid' in line]
     grid = Grid.blank(bounds)
 
     for line in lines:
@@ -76,8 +80,6 @@ with open('2016/22/input.txt') as f:
     count = 0
     for n1 in grid:
         for n2 in grid:
-            if n1 == n2:
-                continue
-            if n1.viable_pair(n2) or n2.viable_pair(n1):
+            if n1 != n2 and (n1.viable_pair(n2) or n2.viable_pair(n1)):
                 count += 1
     print(count//2)
