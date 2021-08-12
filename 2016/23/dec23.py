@@ -62,9 +62,6 @@ def tgl_func(arguments:list[str],registers:Dict[str,Any],pc:ProgramCounter) -> P
         toggle(program[target])
     return pc+1
 
-def sub_func(arguments:list[str],registers:Dict[str,Any],pc:ProgramCounter) -> ProgramCounter:
-    pass
-
 ops = {
     'cpy': Operation('cpy',cpy_func,[Operand.REGISTER|Operand.CONSTANT,Operand.REGISTER]),
     'inc': Operation('inc',inc_func,[Operand.REGISTER]),
