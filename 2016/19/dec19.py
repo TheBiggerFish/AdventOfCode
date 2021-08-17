@@ -4,7 +4,7 @@
 # https://adventofcode.com/2016/day/19
 
 
-from EulerLib.structures import Cycle
+from fishpy.structures import Cycle
 
 input = 3001330
 

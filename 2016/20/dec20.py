@@ -4,7 +4,7 @@
 # https://adventofcode.com/2016/day/20
 
 
-from EulerLib.structures import Range
+from fishpy.structures import Range
 
 with open('2016/20/input.txt') as f:
     ranges = []

@@ -5,7 +5,7 @@
 
 import sys 
 from typing import Any,Dict
-from EulerLib.computer import Computer, Instruction, Operand, Operation, ProgramCounter
+from fishpy.computer import Computer, Instruction, Operand, Operation, ProgramCounter
 
 clock = []
 MAX_CLOCK_LENGTH = 8

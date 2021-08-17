@@ -5,7 +5,7 @@
 
 
 from typing import Any,Dict
-from EulerLib.computer import Computer, Instruction, Operand, Operation, ProgramCounter
+from fishpy.computer import Computer, Instruction, Operand, Operation, ProgramCounter
 from math import factorial 
 
 puzzle_input_1 = 7

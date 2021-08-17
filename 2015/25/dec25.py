@@ -4,8 +4,8 @@
 # https://adventofcode.com/2015/day/25
 
 
-from EulerLib.geometry import Point
-from EulerLib.numbers import triangle
+from fishpy.geometry import Point
+from fishpy.numbers import triangle
 
 def get_diagonal_from_coords(pt:Point) -> int:
     return pt.x + pt.y - 1

@@ -4,7 +4,7 @@
 # https://adventofcode.com/2016/day/13
 
 
-from EulerLib.geometry import Point
+from fishpy.geometry import Point
 from queue import PriorityQueue
 
 input = 1358

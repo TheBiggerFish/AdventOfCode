@@ -4,7 +4,7 @@
 # https://adventofcode.com/2016/day/1
 
 
-from EulerLib.geometry import Point
+from fishpy.geometry import Point
 
 def turn_left(pt):
     return Point(-pt.y,pt.x)

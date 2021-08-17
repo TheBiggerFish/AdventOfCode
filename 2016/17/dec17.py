@@ -5,8 +5,8 @@
 
 
 from hashlib import md5
-from EulerLib.geometry import Point
-from EulerLib.pathfinding import Dijkstra,DepthFirstTraversal
+from fishpy.geometry import Point
+from fishpy.pathfinding import Dijkstra,DepthFirstTraversal
 
 input = 'pxxbnzuo'
 

@@ -5,8 +5,8 @@
 
 
 import re, itertools
-from EulerLib.pathfinding import Dijkstra
-from EulerLib.debug import profile
+from fishpy.pathfinding import Dijkstra
+from fishpy.debug import profile
 
 input = '2016/11/input2.txt'
 

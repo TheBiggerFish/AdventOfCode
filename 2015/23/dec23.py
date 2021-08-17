@@ -5,7 +5,7 @@
 
 
 from typing import Any,Dict
-from EulerLib.computer import Computer, Instruction, Operand, Operation, ProgramCounter
+from fishpy.computer import Computer, Instruction, Operand, Operation, ProgramCounter
 
 
 def hlf_func(arguments:list[str],registers:Dict[str,Any],pc:ProgramCounter) -> ProgramCounter:

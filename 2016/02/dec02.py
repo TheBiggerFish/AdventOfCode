@@ -4,7 +4,7 @@
 # https://adventofcode.com/2016/day/2
 
 
-from EulerLib.geometry import Point
+from fishpy.geometry import Point
 
 class Keypad:
     layout1 = [

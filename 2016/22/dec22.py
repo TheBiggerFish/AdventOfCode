@@ -4,8 +4,8 @@
 # https://adventofcode.com/2016/day/22
 
 
-from EulerLib.geometry import Point
-from EulerLib.pathfinding import Grid
+from fishpy.geometry import Point
+from fishpy.pathfinding import Grid
 
 input = 'abcdefgh'
 bounds = Point(37,27)

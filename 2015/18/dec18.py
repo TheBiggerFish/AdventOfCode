@@ -6,7 +6,7 @@
 
 import pyglet
 from pyglet.gl import glClearColor,glClear,GL_COLOR_BUFFER_BIT
-from EulerLib.geometry import Point
+from fishpy.geometry import Point
 
 width, height = 1000,1000
 window = pyglet.window.Window(width=width,height=height,resizable=True)

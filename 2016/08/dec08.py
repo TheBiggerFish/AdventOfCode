@@ -4,7 +4,7 @@
 # https://adventofcode.com/2016/day/8
 
 
-from EulerLib.geometry import Point
+from fishpy.geometry import Point
 
 class LCD:
     def __init__(self,dim:Point):

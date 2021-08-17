@@ -4,9 +4,9 @@
 # https://adventofcode.com/2016/day/24
 
 
-from EulerLib.pathfinding import Grid,Dijkstra
-from EulerLib.geometry import Point
-from EulerLib.graphs import PathGraph
+from fishpy.pathfinding import Grid,Dijkstra
+from fishpy.geometry import Point
+from fishpy.graphs import PathGraph
 
 
 with open('2016/24/input.txt') as f:

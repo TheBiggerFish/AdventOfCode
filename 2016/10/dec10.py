@@ -4,7 +4,7 @@
 # https://adventofcode.com/2016/day/10
 
 
-from EulerLib.structures import ReversiblePriorityQueue
+from fishpy.structures import ReversiblePriorityQueue
 
 class Giver:
     def __init__(self,value,who):
