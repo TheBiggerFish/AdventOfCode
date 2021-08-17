@@ -4,32 +4,32 @@
 # https://adventofcode.com/2015/day/23
 
 
-from typing import Any,Dict
+from typing import Any,Dict,List
 from fishpy.computer import Computer, Instruction, Operand, Operation, ProgramCounter
 
 
-def hlf_func(arguments:list[str],registers:Dict[str,Any],pc:ProgramCounter) -> ProgramCounter:
+def hlf_func(arguments:List[str],registers:Dict[str,Any],pc:ProgramCounter) -> ProgramCounter:
     registers[arguments[0]] //= 2
     return pc+1
 
-def tpl_func(arguments:list[str],registers:Dict[str,Any],pc:ProgramCounter) -> ProgramCounter:
+def tpl_func(arguments:List[str],registers:Dict[str,Any],pc:ProgramCounter) -> ProgramCounter:
     registers[arguments[0]] *= 3
     return pc+1
 
-def inc_func(arguments:list[str],registers:Dict[str,Any],pc:ProgramCounter) -> ProgramCounter:
+def inc_func(arguments:List[str],registers:Dict[str,Any],pc:ProgramCounter) -> ProgramCounter:
     registers[arguments[0]] += 1
     return pc+1
 
-def jmp_func(arguments:list[str],registers:Dict[str,Any],pc:ProgramCounter) -> ProgramCounter:
+def jmp_func(arguments:List[str],registers:Dict[str,Any],pc:ProgramCounter) -> ProgramCounter:
     return pc+int(arguments[0])
 
-def jie_func(arguments:list[str],registers:Dict[str,Any],pc:ProgramCounter) -> ProgramCounter:
+def jie_func(arguments:List[str],registers:Dict[str,Any],pc:ProgramCounter) -> ProgramCounter:
     if registers[arguments[0]] % 2 == 0:
         return pc + int(arguments[1])
     else:
         return pc + 1
 
-def jio_func(arguments:list[str],registers:Dict[str,Any],pc:ProgramCounter) -> ProgramCounter:
+def jio_func(arguments:List[str],registers:Dict[str,Any],pc:ProgramCounter) -> ProgramCounter:
     if registers[arguments[0]] == 1:
         return pc + int(arguments[1])
     else:

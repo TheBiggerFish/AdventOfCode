@@ -4,25 +4,25 @@
 # https://adventofcode.com/2016/day/12
 
 
-from typing import Any,Dict
+from typing import Any,Dict,List
 from fishpy.computer import Computer, Instruction, Operand, Operation, ProgramCounter
 
-def cpy_func(arguments:list[str],registers:Dict[str,Any],pc:ProgramCounter) -> ProgramCounter:
+def cpy_func(arguments:List[str],registers:Dict[str,Any],pc:ProgramCounter) -> ProgramCounter:
     arg0 = arguments[0]
     if arg0 in registers:
         arg0 = registers[arg0]
     registers[arguments[1]] = int(arg0)
     return pc+1
 
-def inc_func(arguments:list[str],registers:Dict[str,Any],pc:ProgramCounter) -> ProgramCounter:
+def inc_func(arguments:List[str],registers:Dict[str,Any],pc:ProgramCounter) -> ProgramCounter:
     registers[arguments[0]] += 1
     return pc+1
 
-def dec_func(arguments:list[str],registers:Dict[str,Any],pc:ProgramCounter) -> ProgramCounter:
+def dec_func(arguments:List[str],registers:Dict[str,Any],pc:ProgramCounter) -> ProgramCounter:
     registers[arguments[0]] -= 1
     return pc+1
 
-def jnz_func(arguments:list[str],registers:Dict[str,Any],pc:ProgramCounter) -> ProgramCounter:
+def jnz_func(arguments:List[str],registers:Dict[str,Any],pc:ProgramCounter) -> ProgramCounter:
     arg0 = arguments[0]
     if arg0 in registers:
         arg0 = registers[arg0]
