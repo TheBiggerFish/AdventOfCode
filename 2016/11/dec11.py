@@ -4,9 +4,12 @@
 # https://adventofcode.com/2016/day/11
 
 
-import re, itertools
-from fishpy.pathfinding import Dijkstra
+import itertools
+import re
+from typing import List
+
 from fishpy.debug import profile
+from fishpy.pathfinding import Dijkstra
 
 input = '2016/11/input2.txt'
 
@@ -35,14 +38,14 @@ class Compatible:
 
         return generators + chips
 
-    def __lt__(self,other) -> bool:
+    def __lt__(self,other:'Compatible') -> bool:
         if self.element < other.element:
             return True
         if self.element > other.element:
             return False
         return self.type < other.type
     
-    def __eq__(self,other) -> bool:
+    def __eq__(self,other:'Compatible') -> bool:
         return self.element == other.element and self.type == other.type
     
     def __hash__(self) -> int:
@@ -53,7 +56,7 @@ class Compatible:
 
 
 class Building:
-    def __init__(self,items:list,floors:int,elevator:int=1,new=False):
+    def __init__(self,items:List[Compatible],floors:int,elevator:int=1,new=False):
         self.items = items
         if new:
             self.items = sorted(self.items)
@@ -72,7 +75,7 @@ class Building:
             string += '\n'
         return string.strip()
 
-    def __eq__(self,other) -> bool:
+    def __eq__(self,other:'Building') -> bool:
         return self.elevator == other.elevator and self.floors == other.floors and len(self.items) == len(other.items) and len([True for i in range(len(self.items)) if self.items[i].floor != other.items[i].floor or self.items[i] != other.items[i]]) == 0
 
     def __hash__(self):

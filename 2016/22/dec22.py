@@ -5,7 +5,7 @@
 
 
 from fishpy.geometry import Point
-from fishpy.pathfinding import Grid
+from fishpy.pathfinding.grid import Grid
 
 input = 'abcdefgh'
 bounds = Point(37,27)

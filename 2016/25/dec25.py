@@ -3,14 +3,15 @@
 
 # https://adventofcode.com/2016/day/25
 
-import sys 
-from typing import Any,Dict,List
-from fishpy.computer import Computer, Instruction, Operand, Operation, ProgramCounter
+import sys
+
+from fishpy.computer import (ArgList, Computer, Instruction, Operand,
+                             Operation, ProgramCounter, RegisterDict)
 
 clock = []
 MAX_CLOCK_LENGTH = 8
 
-def cpy_func(arguments:List[str],registers:Dict[str,Any],pc:ProgramCounter) -> ProgramCounter:
+def cpy_func(arguments:ArgList,registers:RegisterDict,pc:ProgramCounter) -> ProgramCounter:
     arg0 = arguments[0]
     if arg0 in registers:
         arg0 = registers[arg0]
@@ -18,17 +19,17 @@ def cpy_func(arguments:List[str],registers:Dict[str,Any],pc:ProgramCounter) -> P
         registers[arguments[1]] = int(arg0)
     return pc+1
 
-def inc_func(arguments:List[str],registers:Dict[str,Any],pc:ProgramCounter) -> ProgramCounter:
+def inc_func(arguments:ArgList,registers:RegisterDict,pc:ProgramCounter) -> ProgramCounter:
     if arguments[0] in registers:
         registers[arguments[0]] += 1
     return pc+1
 
-def dec_func(arguments:List[str],registers:Dict[str,Any],pc:ProgramCounter) -> ProgramCounter:
+def dec_func(arguments:ArgList,registers:RegisterDict,pc:ProgramCounter) -> ProgramCounter:
     if arguments[0] in registers:
         registers[arguments[0]] -= 1
     return pc+1
 
-def jnz_func(arguments:List[str],registers:Dict[str,Any],pc:ProgramCounter) -> ProgramCounter:
+def jnz_func(arguments:ArgList,registers:RegisterDict,pc:ProgramCounter) -> ProgramCounter:
     arg0,arg1 = arguments[0],arguments[1]
     if arg0 in registers:
         arg0 = registers[arg0]
@@ -40,7 +41,7 @@ def jnz_func(arguments:List[str],registers:Dict[str,Any],pc:ProgramCounter) -> P
     else:
         return pc + int(arg1)
 
-def out_func(arguments:List[str],registers:Dict[str,Any],pc:ProgramCounter) -> ProgramCounter:
+def out_func(arguments:ArgList,registers:RegisterDict,pc:ProgramCounter) -> ProgramCounter:
     arg0 = arguments[0]
     if arg0 in registers:
         arg0 = registers[arg0]
@@ -50,10 +51,12 @@ def out_func(arguments:List[str],registers:Dict[str,Any],pc:ProgramCounter) -> P
     return pc+1
 
 ops = {
-    'cpy': Operation('cpy',cpy_func,[Operand.REGISTER|Operand.CONSTANT,Operand.REGISTER]),
+    'cpy': Operation('cpy',cpy_func,[Operand.REGISTER|Operand.CONSTANT,
+                                     Operand.REGISTER]),
     'inc': Operation('inc',inc_func,[Operand.REGISTER]),
     'dec': Operation('dec',dec_func,[Operand.REGISTER]),
-    'jnz': Operation('jnz',jnz_func,[Operand.REGISTER|Operand.CONSTANT,Operand.REGISTER|Operand.CONSTANT]),
+    'jnz': Operation('jnz',jnz_func,[Operand.REGISTER|Operand.CONSTANT,
+                                     Operand.REGISTER|Operand.CONSTANT]),
     'out': Operation('out',out_func,[Operand.REGISTER|Operand.CONSTANT])
 }
 

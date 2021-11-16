@@ -4,15 +4,14 @@
 # https://adventofcode.com/2016/day/24
 
 
-from fishpy.pathfinding import Grid,Dijkstra
 from fishpy.geometry import Point
-from fishpy.graphs import PathGraph
-
+from fishpy.mathematics.graphs import PathGraph
+from fishpy.pathfinding import Dijkstra
+from fishpy.pathfinding.grid import Grid
 
 with open('2016/24/input.txt') as f:
     grid = Grid.from_list_of_strings(f.read().strip().split('\n'))
     nodes = grid.char_positions([str(i) for i in range(8)])
-    distances = {}
 
     G = PathGraph()
     for node in nodes:

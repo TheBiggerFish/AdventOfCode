@@ -4,9 +4,8 @@
 # https://adventofcode.com/2016/day/14
 
 
-from hashlib import md5
 import re
-from queue import Queue
+from hashlib import md5
 
 input = 'cuanljph'
 

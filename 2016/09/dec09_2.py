@@ -4,8 +4,6 @@
 # https://adventofcode.com/2016/day/9
 
 
-import re
-
 with open('2016/09/input.txt') as f:
     string = f.read().strip()
     index = 0

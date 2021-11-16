@@ -4,7 +4,8 @@
 # https://adventofcode.com/2016/day/10
 
 
-from fishpy.structures import ReversiblePriorityQueue
+from typing import List, Set, Union
+
 
 class Giver:
     def __init__(self,value,who):
@@ -12,7 +13,7 @@ class Giver:
         self.who = who
 
     @staticmethod
-    def from_string(string):
+    def from_string(string:str):
         spl = string.split()
         return Giver(int(spl[1]),int(spl[5]))
 
@@ -35,11 +36,11 @@ class Receiver:
     def add_item(self,item):
         self.items.append(item)
 
-    def __lt__(self,other):
+    def __lt__(self,other:'Receiver'):
         return self.value < other.value
 
 class Bot:
-    def __init__(self,id,lower,upper):
+    def __init__(self,id,lower:Receiver,upper:Receiver):
         self.id = id
         self.lower = lower
         self.upper = upper
@@ -66,9 +67,8 @@ class Bot:
             self.items = []
         return high
 
-
     @staticmethod
-    def from_string(string):
+    def from_string(string:str):
         spl = string.split()
         lower = Receiver(int(spl[6]))
         if spl[5] == 'bot':
@@ -83,17 +83,17 @@ class Bot:
             upper.set_type(Receiver.OUTPUT)
         return Bot(int(spl[1]),lower,upper)
 
-    def __lt__(self,other):
+    def __lt__(self,other:'Bot'):
         if len(self.items) != len(other.items):
             return len(self.items) < len(other.items)
         return self.id < other.id
 
-    def __gt__(self,other):
+    def __gt__(self,other:'Bot'):
         if len(self.items) != len(other.items):
             return len(self.items) > len(other.items)
         return self.id > other.id
     
-    def __eq__(self,other):
+    def __eq__(self,other:'Bot'):
         return self.id == other.id
 
     def __hash__(self):
@@ -102,9 +102,9 @@ class Bot:
 
 
 with open('2016/10/input.txt') as f:
-    bots = []
-    values = []
-    outputs = []
+    bots:List[Bot] = []
+    values:List[Giver] = []
+    outputs:List[Bot] = []
     for line in f:
         line = line.strip()
         if line[:3] == 'bot':
@@ -114,7 +114,7 @@ with open('2016/10/input.txt') as f:
 
     bots = sorted(bots)
 
-    holders = set()
+    holders:Set[Union[Bot,Receiver]] = set()
     for value in values:
         bots[value.who].add_item(value.value)
     for bot in bots:
