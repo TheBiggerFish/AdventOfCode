@@ -4,7 +4,6 @@
 # https://adventofcode.com/2015/day/17
 
 
-from fishpy import debug
 
 LITERS = 150
 INPUT_FILE = '2015/17/input.txt'

@@ -5,7 +5,10 @@
 
 
 from fishpy.geometry import Point
-from fishpy.numbers import triangle
+
+
+def triangle(n:int):
+    return n*(n+1)//2
 
 def get_diagonal_from_coords(pt:Point) -> int:
     return pt.x + pt.y - 1

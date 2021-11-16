@@ -5,7 +5,6 @@
 
 
 import pyglet
-from pyglet.gl import glClearColor,glClear,GL_COLOR_BUFFER_BIT
 from fishpy.geometry import Point
 
 width, height = 1000,1000
