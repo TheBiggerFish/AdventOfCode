@@ -1,0 +1,41 @@
+graph graph1 {
+    node [shape=circle]
+
+    start [color=blue fontcolor=blue]
+    QF [color=green fontcolor=green]
+    XL [color=green fontcolor=green]
+    US [color=green fontcolor=green]
+    lo [color=red fontcolor=red]
+    nu [color=red fontcolor=red]
+    xb [color=red fontcolor=red]
+    bw [color=red fontcolor=red]
+    po [color=red fontcolor=red]
+    ne [color=red fontcolor=red]
+    ju [color=red fontcolor=red]
+    end [color=blue fontcolor=blue]
+
+
+    start -- lo
+    po -- start
+    QF -- bw
+    po -- ju
+    QF -- lo
+    XL -- ne
+    bw -- US
+    ne -- lo
+    nu -- ne
+    bw -- po
+    QF -- ne
+    ne -- ju
+    lo -- XL
+    QF -- ju
+    bw -- ju
+    nu -- start
+    lo -- nu
+    nu -- XL
+    xb -- XL
+    XL -- po
+    end -- ne
+    end -- ju
+    XL -- end
+}
