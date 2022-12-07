@@ -50,6 +50,6 @@ with open('2022/05/input.txt') as f:
             for line in crates.splitlines()]
     s = Stacks.from_lists(rows[:-1])
     instructions = map(Instruction.from_string, instructions.splitlines())
-    for _, instruction in enumerate(instructions):
+    for instruction in instructions:
         s.execute(instruction)
     print(s.snapshot())
