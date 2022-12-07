@@ -3,32 +3,50 @@
 
 # https://adventofcode.com/2019/day/2
 
+from dataclasses import dataclass
+from enum import Enum
 
 
-input = '2019/02/input.txt'
+class Opcode(Enum):
+    ADD = 1
+    MULT = 2
 
-def output(intcode,noun,verb):
-    intcode[1] = noun
-    intcode[2] = verb
 
-    pc = 0
-    while pc < len(intcode) and intcode[pc] != 99:
-        if intcode[pc] == 1:
-            intcode[intcode[pc+3]] = intcode[intcode[pc+2]] + intcode[intcode[pc+1]]
-        if intcode[pc] == 2:
-            intcode[intcode[pc+3]] = intcode[intcode[pc+2]] * intcode[intcode[pc+1]]
-        pc += 4 
-    return intcode[0]
+@dataclass
+class Operation:
+    type: Opcode
+    bytes: int
 
-with open(input) as f:
-    intcode = [int(item) for item in f.readline().strip().split(',')]
 
-    out = 0
-    for noun in range(100):
-        for verb in range(100):
-            if output(intcode.copy(),noun,verb) == 19690720:
-                out = noun * 100 + verb
-                break
+ops = {Opcode.ADD: Operation(Opcode.ADD, 4),
+       Opcode.MULT: Operation(Opcode.MULT, 4)}
 
-    print(f'Noun=12,Verb=2,Output={output(intcode.copy(),12,2)}')
-    print(f'Output=19690720,Checksum={out}')
+
+@dataclass
+class Instruction:
+    operation: Operation
+    args: list[int]
+
+
+class Intcode:
+    def __init__(self, program: list[int]):
+        self._program = program
+        self.index = 0
+
+    def execute_instruction(self):
+        op = ops[Opcode(self._program[self.index])]
+        ins = Instruction(op, self._program[self.index+1:self.index+4])
+
+    def execute(self):
+        pass
+
+    def read(self, index: int) -> int:
+        return self._program[index]
+
+    def write(self, index: int, value: int):
+        self._program[index] = value
+
+
+with open('2019/02/input.txt') as f:
+    byte_code = f.read().strip().split(',')
+    ints = map(int, byte_code)
