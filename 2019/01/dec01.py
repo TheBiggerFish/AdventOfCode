@@ -3,24 +3,22 @@
 
 # https://adventofcode.com/2019/day/1
 
+def fuel_cost(m):
+    return m // 3 - 2
 
 
-input = '2019/01/input.txt'
+def recursive_cost(weight):
+    added = fuel_cost(weight)
+    while added > 0:
+        weight += added
+        added = fuel_cost(added)
+    return weight
 
 
-with open(input) as f:
-    fuel = lambda num: max(num // 3 - 2, 0)
-    sum1,sum2 = 0,0
-    for line in f:
-        sub_fuel = fuel(int(line.strip()))
-        sum1 += sub_fuel
-        sub_sum = sub_fuel
-        extra = fuel(sub_sum)
-        while extra > 0:
-            sub_sum += extra
-            extra = fuel(extra)
-        sum2 += sub_sum
+with open('2019/01/input.txt') as f:
+    modules = map(int, f.read().split())
+    tanks = list(map(fuel_cost, modules))
+    print(f'Initial fuel required is {sum(tanks)}')
 
-    print(f'Initial fuel required is {sum1}')
-
-    print(f'Total fuel required is {sum2}')
+    fuel = map(recursive_cost, tanks)
+    print(f'Total fuel required is {sum(fuel)}')
