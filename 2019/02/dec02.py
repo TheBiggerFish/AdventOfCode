@@ -3,50 +3,64 @@
 
 # https://adventofcode.com/2019/day/2
 
-from dataclasses import dataclass
-from enum import Enum
+from fishpy.computer import (ArgList, Computer, Operand, Operation,
+                             ProgramCounter)
 
 
-class Opcode(Enum):
-    ADD = 1
-    MULT = 2
+def add_func(arguments: list[int], memory: list[int],
+             pc: ProgramCounter) -> ProgramCounter:
+    memory[arguments[2]] = memory[arguments[0]] + memory[arguments[1]]
+    return pc+4
 
 
-@dataclass
-class Operation:
-    type: Opcode
-    bytes: int
+def mul_func(arguments: list[int], memory: list[int],
+             pc: ProgramCounter) -> ProgramCounter:
+    memory[arguments[2]] = memory[arguments[0]] * memory[arguments[1]]
+    return pc+4
 
 
-ops = {Opcode.ADD: Operation(Opcode.ADD, 4),
-       Opcode.MULT: Operation(Opcode.MULT, 4)}
+def halt_func(arguments: list[int], memory: list[int],
+              pc: ProgramCounter) -> ProgramCounter:
+    return -1
 
 
-@dataclass
-class Instruction:
-    operation: Operation
-    args: list[int]
+ops = {1: Operation(1, add_func, [Operand.ADDRESS, Operand.ADDRESS, Operand.ADDRESS]),
+       2: Operation(2, mul_func, [Operand.ADDRESS, Operand.ADDRESS, Operand.ADDRESS]),
+       99: Operation(99, halt_func, [])}
 
 
-class Intcode:
-    def __init__(self, program: list[int]):
-        self._program = program
-        self.index = 0
+class IntcodeComputer(Computer):
+    def __init__(self, program: list[int], initial_pc: ProgramCounter = 0):
+        super().__init__({}, initial_pc)
+        self.memory = program
 
-    def execute_instruction(self):
-        op = ops[Opcode(self._program[self.index])]
-        ins = Instruction(op, self._program[self.index+1:self.index+4])
-
-    def execute(self):
-        pass
-
-    def read(self, index: int) -> int:
-        return self._program[index]
+    def __repr__(self) -> str:
+        return f'{self.__class__.__name__}(pc:{self.pc})'
 
     def write(self, index: int, value: int):
-        self._program[index] = value
+        self.memory[index] = value
+
+    def read(self, index: int) -> int:
+        return self.memory[index]
+
+    def execute_step(self) -> bool:
+        if self.memory[self.pc] not in ops:
+            raise ValueError(f'Instruction {self.memory[self.pc]} not valid')
+        op = ops[self.memory[self.pc]]
+        args: ArgList = self.memory[self.pc+1:self.pc+4]
+        self.pc = op.function(args, self.memory, self.pc)
+        return 0 <= self.pc < len(self.memory)
+
+    def execute(self):
+        while self.execute_step():
+            pass
 
 
 with open('2019/02/input.txt') as f:
     byte_code = f.read().strip().split(',')
-    ints = map(int, byte_code)
+    program = list(map(int, byte_code))
+    c = IntcodeComputer(program)
+    c.write(1, 12)
+    c.write(2, 2)
+    c.execute()
+    print(c.read(0))
