@@ -1,5 +1,4 @@
-from fishpy.geometry import LatticePoint, Vector2D
-from fishpy.geometry.d2.vector2d import DOWN, LEFT, RIGHT, UP
+from fishpy.geometry import Direction, LatticePoint
 from fishpy.pathfinding.grid import Grid
 
 
@@ -8,7 +7,7 @@ class Forest(Grid):
         grid = Grid.from_list_of_strings(trees).grid
         super().__init__(grid)
 
-    def view_line(self, pos: LatticePoint, direction: Vector2D, steps: int) -> tuple[bool, int]:
+    def view_line(self, pos: LatticePoint, direction: Direction, steps: int) -> tuple[bool, int]:
         for step in range(1, steps+1):
             value = self[pos + direction * step].rep
             if value >= self[pos].rep:
@@ -16,8 +15,8 @@ class Forest(Grid):
         return True, steps
 
     def tree_visible(self, pos: LatticePoint) -> bool:
-        directions = [(self.width-pos.x-1, RIGHT), (pos.x, LEFT),
-                      (self.height-pos.y-1, UP), (pos.y, DOWN)]
+        directions = [(self.width-pos.x-1, Direction.RIGHT), (pos.x, Direction.LEFT),
+                      (self.height-pos.y-1, Direction.UP), (pos.y, Direction.DOWN)]
         for steps, direction in sorted(directions):
             # Sort list of directions to go to nearest side first
 
@@ -27,8 +26,8 @@ class Forest(Grid):
         return False
 
     def scenic_score(self, pos: LatticePoint) -> int:
-        directions = [(self.width-pos.x-1, RIGHT), (pos.x, LEFT),
-                      (self.height-pos.y-1, UP), (pos.y, DOWN)]
+        directions = [(self.width-pos.x-1, Direction.RIGHT), (pos.x, Direction.LEFT),
+                      (self.height-pos.y-1, Direction.UP), (pos.y, Direction.DOWN)]
         total = 1
         for steps, direction in directions:
             _, view = self.view_line(pos, direction, steps)
