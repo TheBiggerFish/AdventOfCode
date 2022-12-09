@@ -1,5 +1,3 @@
-from operator import xor
-
 from fishpy.geometry import Direction, LatticePoint, Vector2D
 
 dir_map = {'U': Direction.UP,
@@ -8,22 +6,51 @@ dir_map = {'U': Direction.UP,
            'R': Direction.RIGHT}
 
 
-with open('2022/09/input.txt') as f:
-    rope = [LatticePoint(0, 0) for _ in range(10)]
+class Rope:
+    def __init__(self, segments: int):
+        self.segments = [LatticePoint(0, 0) for _ in range(segments)]
+        self.visited: set[LatticePoint] = set()
 
-    visited: set[LatticePoint] = set()
+    @property
+    def head(self) -> LatticePoint:
+        return self.segments[0]
 
-    for dir, step in map(str.split, f.read().splitlines()):
-        for _ in range(int(step)):
-            rope[0] += dir_map[dir]
-            for i, segment in enumerate(rope[1:], 1):
-                lead = rope[i-1]
-                relative = lead - segment
-                if relative.x > 1 or relative.x < -1 or relative.y < -1 or relative.y > 1:
-                    new_pos = segment + LatticePoint(min(relative.x, 1) if relative.x > 0 else max(relative.x, -1),
-                                                     min(relative.y, 1) if relative.y > 0 else max(relative.y, -1))
-                    segment.x, segment.y = new_pos.x, new_pos.y
-                else:
+    @head.setter
+    def head(self, value: LatticePoint):
+        self.segments[0] = value
+
+    @property
+    def tail(self) -> LatticePoint:
+        return self.segments[-1]
+
+    def move_head(self, direction: Vector2D, steps: int):
+        for _ in range(steps):
+            self.head: LatticePoint = self.head + direction
+            for i, follower in enumerate(self.segments[1:], 1):
+                leader = self.segments[i-1]
+                new_pos = Rope._pull(leader, follower)
+                if new_pos == follower:
+                    # If this segment doesn't move, later segments also won't need to
                     break
-            visited.add(rope[-1].copy())
-    print(len(visited))
+                self.segments[i] = new_pos
+            self.visited.add(self.tail.copy())
+
+    @staticmethod
+    def _pull(leader: LatticePoint, follower: LatticePoint) -> LatticePoint:
+        if leader.is_adjacent(follower, diagonals=True):
+            return follower
+        relative = leader - follower
+        step = relative.clamp_bounds(lower_bound=LatticePoint(-1, -1),
+                                     upper_bound=LatticePoint(1, 1))
+        return follower + step
+
+
+with open('2022/09/input.txt') as f:
+    rope_2 = Rope(2)
+    rope_10 = Rope(10)
+    for dir, step in map(str.split, f.read().splitlines()):
+        dir, step = dir_map[dir], int(step)
+        rope_2.move_head(dir, step)
+        rope_10.move_head(dir, step)
+    print(f'Tail of 2-segment rope visited {len(rope_2.visited)} positions')
+    print(f'Tail of 10-segment rope visited {len(rope_10.visited)} positions')
