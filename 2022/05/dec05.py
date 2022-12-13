@@ -32,7 +32,7 @@ class Stacks:
         # print(crates)
         columns = [[Crate(crate[1]) for crate in col if crate]
                    for col in zip(*crates)]
-        stacks = [Stack.from_list(list(reversed(col))) for col in columns]
+        stacks = [Stack(initial=list(reversed(col))) for col in columns]
         return Stacks(stacks)
 
     def execute(self, instruction: Instruction) -> None:
