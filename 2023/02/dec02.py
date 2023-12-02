@@ -37,7 +37,7 @@ def main():
         game = Game(id)
 
         for round in line.split(';'):
-            # For each round, match the color to number
+            # For each round, map the color to the count
             cubes = {match[2]: int(match[1])
                      for match in map(cube_regex.match, round.split(','))}
             game.round(cubes)
