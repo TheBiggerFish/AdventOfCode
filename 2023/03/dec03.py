@@ -1,3 +1,5 @@
+from itertools import chain
+
 from fishpy.geometry import LatticePoint
 from fishpy.geometry.d2 import Direction
 from fishpy.pathfinding.grid import Grid
@@ -10,12 +12,12 @@ def main():
 
     symbols = {cell.rep for cell in grid if not cell.rep.isdigit()}
     symbols.remove('.')
-    symbol_pos_nested = grid.char_positions(symbols).values()
 
     # symbol_pos reflects a complete list of cells containing symbols
-    symbol_pos: list[LatticePoint] = [cell
-                                      for row in symbol_pos_nested
-                                      for cell in row]
+    # char_positions returns a dictionary of symbols to lists of LatticePoints
+    #     Ex: {'*': [(5,2), (8,17), (2,9)], '$': [(1,5), (8,4), (16, 1)]}
+    # chain is used to flatten the nested list structure from char_positions.values()
+    symbol_pos = list(chain(*grid.char_positions(symbols).values()))
 
     part_numbers: list[int] = []
     gear_ratios: list[int] = []
