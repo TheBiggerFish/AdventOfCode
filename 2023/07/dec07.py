@@ -91,9 +91,6 @@ class Hand:
                 return True
         return False
 
-    def high_card(self) -> bool:
-        return max([(Hand.CARD_VALUE[card], card) for card in self.cards])[1]
-
     def wins_tiebreak(self, other: 'Hand') -> bool:
         for i in range(len(self.cards)):
             diff = Hand.CARD_VALUE[self.cards[i]] - \
