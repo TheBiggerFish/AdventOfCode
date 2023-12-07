@@ -116,20 +116,20 @@ class JokerHand(Hand):
     @cached_property
     def hand_class(self) -> HandClass:
         if 'J' not in self.cards:
-            return Hand(self.cards, self.bid).hand_class
+            return super().hand_class
         replacement_hands: list[str] = []
         for value in JokerHand.CARD_VALUE.keys():
             if value == 'J':
                 continue
+            # Best placement always comes from changing all Jokers to the same face value card
             replacement_hands.append(self.cards.replace('J', value))
 
         hands = map(lambda cards: Hand(cards, self.bid), replacement_hands)
-        best = max(hands)
-        return best.hand_class
+        return max(hands).hand_class
 
     def wins_tiebreak(self, other: 'JokerHand') -> bool:
-        for i in range(len(self.cards)):
-            diff = JokerHand.CARD_VALUE[self.cards[i]] - \
+        for i, card in enumerate(self.cards):
+            diff = JokerHand.CARD_VALUE[card] - \
                 JokerHand.CARD_VALUE[other.cards[i]]
             if diff != 0:
                 return diff > 0
