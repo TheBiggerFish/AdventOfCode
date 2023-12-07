@@ -92,9 +92,8 @@ class Hand:
         return False
 
     def wins_tiebreak(self, other: 'Hand') -> bool:
-        for i in range(len(self.cards)):
-            diff = Hand.CARD_VALUE[self.cards[i]] - \
-                Hand.CARD_VALUE[other.cards[i]]
+        for i, card in enumerate(self.cards):
+            diff = Hand.CARD_VALUE[card] - Hand.CARD_VALUE[other.cards[i]]
             if diff != 0:
                 return diff > 0
         raise Exception('Identical hands?')
