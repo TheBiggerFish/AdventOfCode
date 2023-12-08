@@ -32,18 +32,22 @@ def main():
     nodes: dict[str, Node] = {}
     for line in lines:
         node, children = line.split(' = ')
-        children = children.strip('()').split(', ')
-        nodes.setdefault(node, Node(node, node))
-        nodes.setdefault(children[0], Node(children[0], children[0]))
-        nodes.setdefault(children[1], Node(children[1], children[1]))
-        nodes[node].add_child(nodes[children[0]])
-        nodes[node].add_child(nodes[children[1]])
+        left, right = children.strip('()').split(', ')
 
-    print(follow_directions('AAA', {'ZZZ'}, nodes, directions))
+        nodes.setdefault(node, Node(node))
+        nodes.setdefault(left, Node(left))
+        nodes.setdefault(right, Node(right))
+
+        nodes[node].add_child(nodes[left])
+        nodes[node].add_child(nodes[right])
+
+    steps = follow_directions('AAA', {'ZZZ'}, nodes, directions)
+    print(f'Number of steps taken: {steps}')
 
     starts = list(filter(lambda node: node[-1] == 'A', nodes.keys()))
     ends = list(filter(lambda node: node[-1] == 'Z', nodes.keys()))
-    print(follow_directions_ghosts(starts, ends, nodes, directions))
+    ghost_steps = follow_directions_ghosts(starts, ends, nodes, directions)
+    print(f'Number of ghost steps taken: {ghost_steps}')
 
 
 if __name__ == '__main__':
