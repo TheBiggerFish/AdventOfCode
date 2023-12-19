@@ -2,8 +2,7 @@ from dataclasses import dataclass
 from itertools import pairwise
 
 from fishpy.geometry import LatticePoint
-from fishpy.pathfinding import Direction, Location
-from fishpy.pathfinding.grid import Grid
+from fishpy.pathfinding import Direction
 
 DIRECTIONS = {
     'U': Direction.NORTH, 'D': Direction.SOUTH,
@@ -19,6 +18,10 @@ class Instruction:
 
 
 def size(instructions: list[Instruction]) -> int:
+    """
+        Implementation of the shoelace formula
+        https://en.wikipedia.org/wiki/Shoelace_formula
+    """
     pos = LatticePoint(0,0)
     corners: list[LatticePoint] = [pos]
     perimeter = 0
