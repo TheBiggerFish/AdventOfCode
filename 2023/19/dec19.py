@@ -100,6 +100,7 @@ class Part:
 
 
 class Condition:
+    """Represents a conditional branch of a workflow"""
     def __init__(self, string):
         matches = re.findall(r'(\w)([><])(\d+):(\w+)', string)[0]
         self.property = matches[0]
@@ -118,6 +119,7 @@ class Condition:
 
 
 class Workflow:
+    """Represents a single workflow with conditional and default branches"""
     def __init__(self, string):
         matches = re.findall(r'[\d\w><:]+', string)
         self.name = matches[0]
@@ -130,6 +132,7 @@ class Workflow:
             if condition.matches(part):
                 return condition.branch
         return self.default
+
 
 def accepted_ranges(start: str, initial_range: PartRanges) -> list[PartRanges]:
     """Recursively build a list of PartRanges to represent "Accepted" parts"""
