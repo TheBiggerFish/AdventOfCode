@@ -8,7 +8,7 @@ Types and counts of 'Cards', where each 'Card' is a single instance of the input
         O E 1 E O
       O E 1 0 1 E O
     O E 1 0 1 0 1 E O
-    S E 0 1 C 1 0 1 S
+    S 1 0 1 C 1 0 1 S
     O E 1 0 1 0 1 E O
       O E 1 0 1 E O
         O E 1 E O 
