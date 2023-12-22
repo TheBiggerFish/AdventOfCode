@@ -51,8 +51,9 @@ def main():
     start = grid.char_positions('S')['S'].pop()
     grid[start].rep = '.'
     
-    plots = exact_flood_fill(grid, start, steps=130)
-    print(len(plots))
+    near_steps = 64
+    plots = exact_flood_fill(grid, start, steps=near_steps)
+    print(f'The elf could reach {len(plots)} garden plots after {near_steps} steps')
     
     #65+even=7520, 65+odd=7457
     filled_even = len(exact_flood_fill(grid, start, steps=(65+131+131))) #7520
@@ -89,7 +90,7 @@ def main():
     # Outer ring odd
     options += ortho * (far_bottom_right_odd + far_top_right_odd + far_bottom_left_odd + far_top_left_odd)
     
-    print(options)
+    print(f'The elf could reach {options} garden plots after {far_steps} steps')
     
     
 
