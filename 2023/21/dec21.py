@@ -4,15 +4,15 @@ from fishpy.pathfinding.grid import Grid
 """
 Types and counts of 'Cards', where each 'Card' is a single instance of the input grid
 
-       OSO
-      OE1EO
-     OE101EO
-    OE10101EO
-    SE01C101S
-    OE10101EO
-     OE101EO
-      OE1EO
-       OSO
+          O S O
+        O E 1 E O
+      O E 1 0 1 E O
+    O E 1 0 1 0 1 E O
+    S E 0 1 C 1 0 1 S
+    O E 1 0 1 0 1 E O
+      O E 1 0 1 E O
+        O E 1 E O 
+          O S O
 
 C: center (1) = some large odd number of cycles, stop counting after a while
 S: far side (4) = 65 steps in from middle of respective side
