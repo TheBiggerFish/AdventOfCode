@@ -46,11 +46,10 @@ def would_fall(brick: int, disintegrated: int) -> bool:
     if bricks[disintegrated].high.z > bricks[brick].low.z:
         return False
 
-    falls = True
     for supporter in supporter_map[brick]:
         if supporter != disintegrated and not would_fall(supporter, disintegrated):
-            falls = False
-    return falls
+            return False
+    return True
 
 def fall_count(brick: int) -> int:
     """Determine how many other bricks would fall if 'brick' was disintegrated"""
