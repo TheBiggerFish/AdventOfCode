@@ -1,6 +1,6 @@
-from functools import partial, lru_cache
+from functools import partial, cache
 
-@lru_cache(maxsize=None)
+@cache
 def maximize_joltage(bank: str, digits: int) -> int:
     if digits == 1:
         return int(max(bank))
@@ -17,7 +17,6 @@ part_2 = partial(maximize_joltage, digits=12)
 
 with open('input.txt') as f:
     banks = f.read().splitlines()
-
 
 answer_1 = sum(map(part_1, banks))
 print("Answer 1:", answer_1)
